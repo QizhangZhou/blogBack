@@ -10,6 +10,7 @@ function Post(blog) {
     this.abstract = blog.abstract;
     this.body = blog.body;
     this.author = blog.author;
+    this.label = blog.label;
 }
 
 module.exports = Post;
@@ -31,6 +32,7 @@ Post.prototype.save = function (callback) {
         abstract: this.abstract,
         body: this.body,
         author: this.author,
+        label:this.label
     };
 
     //open db

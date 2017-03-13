@@ -6,6 +6,7 @@ Label = require('../models/label');
 Talkline = require('../models/talkline');
 var app = express();
 var router = express.Router();
+markdown = require('markdown').markdown;
 
 //var app = express.app();
 //middleware
@@ -26,18 +27,6 @@ function checkNotLogin(req, res, next) {
 }
 /* GET home page. */
 router.get('/', function (req, res, next) {
-   /* Post.get(null,function (err,posts) {
-        if(err){
-            post = [];
-        }
-        res.render('index',{
-            title:'index',
-            user:req.session.user,
-            posts:posts,
-            success:req.flash('success').toString(),
-            error:req.flash('error').toString()
-        })
-    });*/
 });
 //register router
 //router.get('/reg',checkNotLogin);
@@ -209,6 +198,7 @@ router.get('/getlabel',function (req,res) {
             console.log(err);
             return res.rediract('/');
         }
+
         res.json(data);
     })
 });
@@ -218,6 +208,16 @@ router.get('/blog/:id',function (req,res) {
         if (err) {
             req.flash('error', err);
             return res.redirect('/');
+        }
+        data[0].body = markdown.toHTML(data[0].body);
+        res.json(data);
+    });
+})
+
+router.get('/b/:id',function (req,res) {
+    Post.getOne(req.params.id, function (err, data) {
+        if (err) {
+            req.flash('error', err);
         }
         res.json(data);
     });
@@ -251,6 +251,9 @@ router.get('/delTlkln/:id',function(req,res){
         }
         res.json({sucess:true});
     });
-})
+});
 
+app.get('/*', function(req, res) {
+    res.sendfile('/public/index.html');
+});
 module.exports = router;

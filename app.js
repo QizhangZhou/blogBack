@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('connect-flash');
+var fallback = require('express-history-api-fallback');
 
 /*var Router = require('react-router');
 var React = require('react');
@@ -51,8 +52,9 @@ app.use(session({
         res.send(page);
     });
 });*/
+const root = __dirname+'/public';
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(fallback('index.html', {root: root }));
 //app.use(express.methodOverride());
 
 app.use('/', index);
